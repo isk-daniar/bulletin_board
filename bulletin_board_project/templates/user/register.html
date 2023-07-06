@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Регистрация
+{% endblock title %}
+
+{% block content %}
+    <h3>Регистрация</h3>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+            <p><label for="{{ f.id_for_label }}">{{ f.label }}</label>  {{ f }}</p>
+            <div>{{ f.errors }}</div>
+        {% endfor %}
+        <button type="submit">Регистрация</button>
+    </form>
+    <hr>
+    <p align="justify"> {{ post.text|safe }}</p>
+{% endblock content %}

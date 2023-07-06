@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+{% load static %}
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+{% block content %}
+<h1>{{title}}</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {% for f in form %}
+        <p><label for="{{ f.id_for_label }}">{{ f.label }}</label>  {{ f }}</p>
+        <div>{{ f.errors }}</div>
+    {% endfor %}
+    <input type="submit" value="Сохранить" />
+</form>
+{% endblock content %}

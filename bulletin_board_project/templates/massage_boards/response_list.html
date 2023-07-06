@@ -1,0 +1,47 @@
+{% extends 'default.html' %}
+
+
+{% block title %}
+Отклики на мои объявления
+{% endblock title %}
+
+{% block content %}
+    <h3> Отклики на мои объявления</h3>
+    {% if user.is_authenticated %}
+        {% if responses %}
+            {% block search %}
+            {% endblock search %}
+            <h3> Отклики на объявление: </h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Объявление</th>
+                        <th scope="col">Дата отклика</th>
+                        <th scope="col">Автор отклика</th>
+                        <th scope="col">Текст отклика</th>
+                        <th scope="col">Удалить отклик</th>
+                        <th scope="col">Принять отклик</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for response in responses %}
+                   <tr>
+                       <td>{{ response.post_id }}</a></td>
+                       <td>{{ response.created_at|date:'d.m.Y H:i:s' }}</td>
+                       <td>{{ response.user }}</a></td>
+                       <td>{{ response.text }}</td>
+                       <td><button> <a href="{% url 'response_delete' p.pk %}">Удалить</a> </button></td>
+                       <td><button> <a href="{% url 'response_accept' p.pk %}">Принять</a> </button></td>
+                   </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3> Откликов пока нет... </h3>
+        {% endif %}
+    {% else %}
+        <h3> Авторизуйтесь на сайте для просмотра откликов на ваши объявления! </h3>
+    {% endif %}
+    <hr>
+
+{% endblock content %}

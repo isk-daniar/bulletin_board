@@ -1,0 +1,69 @@
+{% extends 'default.html' %}
+
+
+{% block title %}
+{{ post.title }}
+{% endblock title %}
+
+{% block content %}
+    <h3> {{ post.title }}</h3>
+    <hr>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr>
+                <td>
+                    <img src="{{ post.image.url }}" >
+                </td>
+                <td>
+                    <p>Дата объявления: {{ post.created_at|date:'d.m.Y H:i:s'}}</p>
+                </td>
+                <td>
+                    <p>Создал: {{ post.user.username}}</p>
+                </td>
+                <td>
+                    <p>Категория: {{ post.category.name }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <p align="justify"> {{ post.text|safe }}</p>
+    <hr>
+    {% if user.is_authenticated and user.id == post.user.id %}
+        <button> <a href="{% url 'post_update' post.pk %}"> Редактировать объявление </a> </button>
+        <button> <a href="{% url 'post_delete' post.pk %}"> Удалить объявление </a> </button>
+    {% else %}
+        {% if user.is_authenticated %}
+              <form  data-post-id="{{ post.id }}">
+                  {% csrf_token %}
+                  {{ like_form.as_p }}
+                  <button type="submit">Лайк</button>
+              </form>
+            <button> <a href="{% url 'response_create' post.pk %}"> Добавить отклик </a> </button>
+        {% endif %}
+    {% endif %}
+    <hr>
+    {% if resp %}
+        <h3> Отклики на объявление: </h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Дата отклика</th>
+                    <th scope="col">Автор отклика</th>
+                    <th scope="col">Текст отклика</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for response in responses %}
+               <tr>
+                   <th>{{ response.created_at|date:'d.m.Y H:i:s' }}</th>
+                   <td>{{ response.user }}</a></td>
+                   <td>{{ response.text }}</td>
+               </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h3> Откликов пока нет... </h3>
+    {% endif %}
+{% endblock content %}

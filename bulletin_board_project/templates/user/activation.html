@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Активация учетной записи
+{% endblock title %}
+
+{% block content %}
+    <h3>Активация учетной записи</h3>
+    <hr>
+    <h1>Введите имя пользователя (логин) и пароль, полученный в письме.</h1>
+    <hr>
+    <form action="{% url 'onetimecodeinput' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Имя пользователя (логин): </label>
+        <input id="username" type="text" name="username">
+        <label for="code">Одноразовый код для активации: </label>
+        <input id="code" type="text" name="code">
+        <input type="submit" value="Активировать">
+    </form>
+{% endblock content %}

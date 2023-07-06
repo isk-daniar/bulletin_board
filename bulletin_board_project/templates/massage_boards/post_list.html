@@ -1,0 +1,51 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Объявления
+{% endblock title %}
+
+{% block content %}
+    <h1>Все объявления</h1>
+
+
+   {% block search %}
+   {% endblock search %}
+
+   <hr>
+   {% if posts %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Дата публикации</th>
+                    <th scope="col">Изображения</th>
+                    <th scope="col">Заголовок</th>
+                    <th scope="col">Текст</th>
+                    <th scope="col">Лайк</th>
+                </tr>
+            </thead>
+            <tbody>
+
+           {% for post in posts %}
+           <tr>
+               <th>{{ post.created_at|date:'d.m.Y H:i:s' }}</th>
+               <td><a href="{% url 'post_detail' post.pk %}"><img src="{{ post.image.url }}"></a></td>
+               <td><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></td>
+               <td>{{ post.text|safe|truncatewords:20 }}</td>
+               <td>
+                   <form  data-post-id="{{ post.id }}">
+                      {% csrf_token %}
+                      {{ like_form.as_p }}
+                      <button type="submit">Лайк</button>
+                  </form>
+               </td>
+
+           </tr>
+           {% endfor %}
+
+            </tbody>
+        </table>
+   {% else %}
+       <h2>Объявления отсутствуют!</h2>
+   {% endif %}
+
+{% endblock content %}

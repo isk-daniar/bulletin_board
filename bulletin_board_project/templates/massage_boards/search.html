@@ -1,0 +1,8 @@
+{% extends 'massage_boards/response_list.html' %}
+{% block search %}
+    <form action="" method="get">
+       {% csrf_token %}
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+   </form>
+{% endblock search %}
